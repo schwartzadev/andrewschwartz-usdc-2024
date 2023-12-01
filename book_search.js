@@ -15,17 +15,51 @@
 /**
  * Searches for matches in scanned text.
  * @param {string} searchTerm - The word or term we're searching for. 
- * @param {JSON} scannedTextObj - A JSON object representing the scanned text.
+ * @param {JSON} scannedTextObj - A JSON object representing the scanned text
+ *   from a list of books. Each book has keys for Title, ISBN, and Content.
+ *   Content is an array of lines with keys Page, Line, and Text.
  * @returns {JSON} - Search results.
  * */ 
  function findSearchTermInBooks(searchTerm, scannedTextObj) {
-    /** You will need to implement your search and 
-     * return the appropriate object here. */
+    // For each book, we need to search the content for the search term.
+    // If we find it, we'll add the book's ISBN, page, and line to the result object.
 
+    // Placeholder object to be returned.
     var result = {
-        "SearchTerm": "",
+        "SearchTerm": searchTerm,
         "Results": []
     };
+
+    /**
+     * Searches for matches in a single book.
+     * @param {JSON} book - A JSON book to be searched.
+     * @returns {JSON} - Matches in this book.
+     */
+    function searchBook(book) {
+        var bookResult = [];
+        var bookContent = book.Content;
+
+        // This iterates over each line in the book.
+        for (var i = 0; i < bookContent.length; i++) {
+            var line = bookContent[i];
+
+            if (line.Text.includes(searchTerm)) {
+                bookResult.push({
+                    "ISBN": book.ISBN,
+                    "Page": line.Page,
+                    "Line": line.Line
+                });
+            }
+        }
+
+        return bookResult;
+    }
+
+    for (var i = 0; i < scannedTextObj.length; i++) {
+        var book = scannedTextObj[i];
+        var bookResults = searchBook(book);
+        result.Results = result.Results.concat(bookResults);
+    }
     
     return result; 
 }
