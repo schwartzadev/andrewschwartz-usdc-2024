@@ -117,15 +117,38 @@ const twentyLeaguesOut = {
  * Please add your unit tests below.
  * */
 
-/** We can check that, given a known input, we get a known output. */
-const test1result = findSearchTermInBooks("the", twentyLeaguesIn);
-if (JSON.stringify(twentyLeaguesOut) === JSON.stringify(test1result)) {
-    console.log("PASS: Test 1");
-} else {
-    console.log("FAIL: Test 1");
-    console.log("Expected:", twentyLeaguesOut);
-    console.log("Received:", test1result);
+
+/**
+ * A helper function for running tests.
+//  TODO: refactor this so the arguments are {methodArguments}, expectedOutput, testName
+ * @param {string} searchTerm - The testing term to pass to findSearchTermInBooks.
+ * @param {JSON} scannedTextObj - The testing scanned text object to pass to findSearchTermInBooks.
+ * @param {JSON} expectedOutput - The expected output from findSearchTermInBooks.
+ * @param {string} testName - A name for the test for logging.
+ */
+function unitTestFindSearchTermInBooks(
+    searchTerm,
+    scannedTextObj,
+    expectedOutput,
+    testName
+    ) {
+        const actualOutput = findSearchTermInBooks(searchTerm, scannedTextObj)
+        if (JSON.stringify(expectedOutput) === JSON.stringify(actualOutput)) {
+            console.log("PASS:", testName);
+        } else {
+            console.log("FAIL:", testName);
+            console.log("Expected:", expectedOutput);
+            console.log("Received:", actualOutput);
+        }
 }
+
+/** We can check that, given a known input, we get a known output. */
+unitTestFindSearchTermInBooks(
+    "the",
+    twentyLeaguesIn,
+    twentyLeaguesOut,
+    "Test 1"
+)
 
 /** We could choose to check that we get the right number of results. */
 const test2result = findSearchTermInBooks("the", twentyLeaguesIn); 
