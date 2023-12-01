@@ -147,15 +147,68 @@ unitTestFindSearchTermInBooks(
     "the",
     twentyLeaguesIn,
     twentyLeaguesOut,
-    "Test 1"
+    "Pre-made Test 1."
 )
+
+/** Check that a list with no books returns no results. */
+unitTestFindSearchTermInBooks(
+    "the",
+    [],
+    {
+        "SearchTerm": "the",
+        "Results": []
+    },
+    "Empty input returns empty output."
+)
+
+/** Test with one book and no content. */
+unitTestFindSearchTermInBooks(
+    "search",
+    [
+        {
+            "Title": "On Painting",
+            "ISBN": "9780140433319",
+            "Content": []
+        }
+    ],
+    {
+        "SearchTerm": "search",
+        "Results": []
+    },
+    "A list with one book and no content returns empty output."
+)
+
+/** Don't match case insensitively. */
+unitTestFindSearchTermInBooks(
+    "queried",
+    [
+        {
+            "Title": "On Painting",
+            "ISBN": "9780140433319",
+            "Content": [
+                {
+                    "Page": 1,
+                    "Line": 1,
+                    "Text": "the Queried string lives here"
+                }
+            ]
+        }
+    ],
+    {
+        "SearchTerm": "queried",
+        "Results": []
+    },
+    "A query for a matching term with the wrong case returns no results."
+)
+
+// TODO: how to handle a search for "dark-ness" given the input text?
 
 /** We could choose to check that we get the right number of results. */
 const test2result = findSearchTermInBooks("the", twentyLeaguesIn); 
 if (test2result.Results.length == 1) {
-    console.log("PASS: Test 2");
+    console.log("PASS: Returns only one result.");
 } else {
-    console.log("FAIL: Test 2");
+    console.log("FAIL: Returns only one result.");
     console.log("Expected:", twentyLeaguesOut.Results.length);
     console.log("Received:", test2result.Results.length);
 }
