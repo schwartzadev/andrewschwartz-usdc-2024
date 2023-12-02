@@ -175,7 +175,7 @@ unitTestFindSearchTermInBooks(
         "SearchTerm": "search",
         "Results": []
     },
-    "A list with one book and no content returns empty output."
+    "A query on a list with one book and no content returns empty output."
 )
 
 /** Don't match case insensitively. */
@@ -199,6 +199,105 @@ unitTestFindSearchTermInBooks(
         "Results": []
     },
     "A query for a matching term with the wrong case returns no results."
+)
+
+/** Returns multiple matches in the same book. */
+unitTestFindSearchTermInBooks(
+    "match",
+    [
+        {
+            "Title": "On Painting",
+            "ISBN": "9780140433319",
+            "Content": [
+                {
+                    "Page": 1,
+                    "Line": 1,
+                    "Text": "the match"
+                },
+                {
+                    "Page": 2,
+                    "Line": 12,
+                    "Text": "another match"
+                },
+                {
+                    "Page": 2,
+                    "Line": 12,
+                    "Text": "misc line that should not return"
+                },
+            ]
+        }
+    ],
+    {
+        "SearchTerm": "match",
+        "Results": [
+            {
+                "ISBN": "9780140433319",
+                "Page": 1,
+                "Line": 1,
+            },
+            {
+                "ISBN": "9780140433319",
+                "Page": 2,
+                "Line": 12,
+            }
+        ]
+    },
+    "A query that has multiple matches in the same book returns multiple results."
+)
+
+/** Returns multiple matches in different books. */
+unitTestFindSearchTermInBooks(
+    "match",
+    [
+        {
+            "Title": "On Painting",
+            "ISBN": "9780140433319",
+            "Content": [
+                {
+                    "Page": 1,
+                    "Line": 18,
+                    "Text": "the match"
+                },
+                {
+                    "Page": 2,
+                    "Line": 12,
+                    "Text": "misc line that should not return"
+                },
+            ]
+        },
+        {
+            "Title": "Rental Person Who Does Nothing: A Memoir",
+            "ISBN": "9781335017536",
+            "Content": [
+                {
+                    "Page": 3,
+                    "Line": 8,
+                    "Text": "this is not a hit"
+                },
+                {
+                    "Page": 23,
+                    "Line": 4,
+                    "Text": "this line matches"
+                }
+            ]
+        }
+    ],
+    {
+        "SearchTerm": "match",
+        "Results": [
+            {
+                "ISBN": "9780140433319",
+                "Page": 1,
+                "Line": 18,
+            },
+            {
+                "ISBN": "9781335017536",
+                "Page": 23,
+                "Line": 4,
+            }
+        ]
+    },
+    "A query that has multiple matches in different books returns multiple results."
 )
 
 // TODO: how to handle a search for "dark-ness" given the input text?
