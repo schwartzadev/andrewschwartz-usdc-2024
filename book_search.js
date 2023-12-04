@@ -35,7 +35,7 @@
      * @param {JSON} book - A JSON book to be searched.
      * @returns {JSON} - Matches in this book.
      */
-    function searchBook(book) {
+    function findSearchTermInBook(book) {
         var bookResult = [];
         var bookContent = book.Content;
 
@@ -57,7 +57,7 @@
 
     for (var i = 0; i < scannedTextObj.length; i++) {
         var book = scannedTextObj[i];
-        var bookResults = searchBook(book);
+        var bookResults = findSearchTermInBook(book);
         result.Results = result.Results.concat(bookResults);
     }
     
