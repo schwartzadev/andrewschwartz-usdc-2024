@@ -1,24 +1,17 @@
 /**
- * RECOMMENDATION
- *
- * To test your code, you should open "tester.html" in a web browser.
- * You can then use the "Developer Tools" to see the JavaScript console.
- * There, you will see the results unit test execution. You are welcome
- * to run the code any way you like, but this is similar to how we will
- * run your code submission.
- *
- * The Developer Tools in Chrome are available under the "..." menu,
- * futher hidden under the option "More Tools." In Firefox, they are
- * under the hamburger (three horizontal lines), also hidden under "More Tools."
+ * SEARCHES FOR MATCHES IN SCANNED TEXT
+ * This function takes a search term and a list of books, and returns a list of
+ * matches. Each match is an object with the ISBN, page, and line number of the
+ * match.
  */
 
 /**
  * Searches for matches in scanned text.
- * @param {string} searchTerm - The word or term we're searching for.
- * @param {JSON} scannedTextObj - A JSON object representing the scanned text
+ * @param {string} searchTerm The word or term we're searching for.
+ * @param {JSON} scannedTextObj A JSON object representing the scanned text
  *   from a list of books. Each book has keys for Title, ISBN, and Content.
  *   Content is an array of lines with keys Page, Line, and Text.
- * @returns {JSON} - Search results.
+ * @returns {JSON} Search results.
  * */
 function findSearchTermInBooks(searchTerm, scannedTextObj) {
   // For each book, we need to search the content for the search term.
@@ -32,8 +25,8 @@ function findSearchTermInBooks(searchTerm, scannedTextObj) {
 
   /**
    * Searches for matches in a single book.
-   * @param {JSON} book - A JSON book to be searched.
-   * @returns {JSON} - Matches in this book.
+   * @param {JSON} book A JSON book to be searched.
+   * @returns {JSON} Matches in this book.
    */
   function findSearchTermInBook(book) {
     var bookResult = [];
@@ -91,7 +84,7 @@ const twentyLeaguesIn = [
 
 /** Example output object */
 const twentyLeaguesOut = {
-  SearchTerm: "the",
+  SearchTerm: " the ",
   Results: [
     {
       ISBN: "9780000528531",
@@ -119,11 +112,10 @@ const twentyLeaguesOut = {
 
 /**
  * A helper function for running tests.
-//  TODO: refactor this so the arguments are {methodArguments}, expectedOutput, testName
- * @param {string} searchTerm - The testing term to pass to findSearchTermInBooks.
- * @param {JSON} scannedTextObj - The testing scanned text object to pass to findSearchTermInBooks.
- * @param {JSON} expectedOutput - The expected output from findSearchTermInBooks.
- * @param {string} testName - A name for the test for logging.
+ * @param {string} searchTerm The testing term to pass to findSearchTermInBooks.
+ * @param {JSON} scannedTextObj The testing scanned text object to pass to findSearchTermInBooks.
+ * @param {JSON} expectedOutput The expected output from findSearchTermInBooks.
+ * @param {string} testName A name for the test for logging.
  */
 function unitTestFindSearchTermInBooks(
   searchTerm,
@@ -143,7 +135,7 @@ function unitTestFindSearchTermInBooks(
 
 /** We can check that, given a known input, we get a known output. */
 unitTestFindSearchTermInBooks(
-  "the",
+  " the " ,
   twentyLeaguesIn,
   twentyLeaguesOut,
   "Pre-made Test 1.",
@@ -151,10 +143,10 @@ unitTestFindSearchTermInBooks(
 
 /** Check that a list with no books returns no results. */
 unitTestFindSearchTermInBooks(
-  "the",
-  [],
+  "query",
+  [], // empty list
   {
-    SearchTerm: "the",
+    SearchTerm: "query",
     Results: [],
   },
   "Empty input returns empty output.",
@@ -169,7 +161,7 @@ unitTestFindSearchTermInBooks(
       ISBN: "9780140433319",
       Content: [],
     },
-  ],
+  ], // a list with one book and no content
   {
     SearchTerm: "search",
     Results: [],
@@ -188,7 +180,7 @@ unitTestFindSearchTermInBooks(
         {
           Page: 1,
           Line: 1,
-          Text: "the Queried string lives here",
+          Text: "the capitalized Queried string lives here",
         },
       ],
     },
@@ -300,13 +292,3 @@ unitTestFindSearchTermInBooks(
 );
 
 // TODO: how to handle a search for "dark-ness" given the input text?
-
-/** We could choose to check that we get the right number of results. */
-const test2result = findSearchTermInBooks("the", twentyLeaguesIn);
-if (test2result.Results.length == 1) {
-  console.log("PASS: Returns only one result.");
-} else {
-  console.log("FAIL: Returns only one result.");
-  console.log("Expected:", twentyLeaguesOut.Results.length);
-  console.log("Received:", test2result.Results.length);
-}
