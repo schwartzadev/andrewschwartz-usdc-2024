@@ -112,12 +112,13 @@ const twentyLeaguesOut = {
 
 /**
  * A helper function for running tests.
+ * 
  * @param {string} searchTerm The testing term to pass to findSearchTermInBooks.
  * @param {JSON} scannedTextObj The testing scanned text object to pass to findSearchTermInBooks.
  * @param {JSON} expectedOutput The expected output from findSearchTermInBooks.
  * @param {string} testName A name for the test for logging.
  */
-function unitTestFindSearchTermInBooks(
+function testFindSearchTermInBooks(
   searchTerm,
   scannedTextObj,
   expectedOutput,
@@ -134,15 +135,15 @@ function unitTestFindSearchTermInBooks(
 }
 
 /** We can check that, given a known input, we get a known output. */
-unitTestFindSearchTermInBooks(
+testFindSearchTermInBooks(
   " the " ,
   twentyLeaguesIn,
   twentyLeaguesOut,
-  "Pre-made Test 1.",
+  "Searching for a string with spaces returns the correct result.",
 );
 
 /** Check that a list with no books returns no results. */
-unitTestFindSearchTermInBooks(
+testFindSearchTermInBooks(
   "query",
   [], // empty list
   {
@@ -153,7 +154,7 @@ unitTestFindSearchTermInBooks(
 );
 
 /** Test with one book and no content. */
-unitTestFindSearchTermInBooks(
+testFindSearchTermInBooks(
   "search",
   [
     {
@@ -170,7 +171,7 @@ unitTestFindSearchTermInBooks(
 );
 
 /** Don't match case insensitively. */
-unitTestFindSearchTermInBooks(
+testFindSearchTermInBooks(
   "queried",
   [
     {
@@ -193,7 +194,7 @@ unitTestFindSearchTermInBooks(
 );
 
 /** Returns multiple matches in the same book. */
-unitTestFindSearchTermInBooks(
+testFindSearchTermInBooks(
   "match",
   [
     {
@@ -236,8 +237,41 @@ unitTestFindSearchTermInBooks(
   "A query that has multiple matches in the same book returns multiple results.",
 );
 
+/** A query for a string *not* in any book returns no results. */
+testFindSearchTermInBooks(
+  "missing string",
+  [
+    {
+      Title: "On Painting",
+      ISBN: "9780140433319",
+      Content: [
+        {
+          Page: 1,
+          Line: 1,
+          Text: "the match",
+        },
+        {
+          Page: 2,
+          Line: 12,
+          Text: "another match",
+        },
+        {
+          Page: 2,
+          Line: 12,
+          Text: "misc line that should not return",
+        },
+      ],
+    },
+  ],
+  {
+    SearchTerm: "missing string",
+    Results: [],
+  },
+  "A query for a string *not* in any book returns no results."
+);
+
 /** Returns multiple matches in different books. */
-unitTestFindSearchTermInBooks(
+testFindSearchTermInBooks(
   "match",
   [
     {
